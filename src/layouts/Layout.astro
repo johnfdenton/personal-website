@@ -1,0 +1,44 @@
+---
+import Navigation from '../components/Navigation.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Portfolio of John [Last Name] - Educational Technologist, Instructional Designer, and Coding Teacher" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-neutral-900 text-neutral-100 min-h-screen">
+    <Navigation />
+    <main class="container mx-auto px-4 py-8">
+      <slot />
+    </main>
+    <footer class="bg-neutral-800 border-t border-neutral-700 mt-16">
+      <div class="container mx-auto px-4 py-6 text-center text-neutral-400">
+        <p>&copy; {new Date().getFullYear()} John [Last Name]. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    scroll-behavior: smooth;
+  }
+</style>

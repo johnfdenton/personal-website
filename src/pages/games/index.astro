@@ -1,0 +1,61 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import GameCard from '../../components/GameCard.astro';
+
+// This array makes it easy to add more games in the future
+// Just add a new object to this array with the game details
+const games = [
+  {
+    title: 'UniCat',
+    slug: 'unicat',
+    description: 'A delightful Flappy Bird-style game featuring a flying unicorn cat! Navigate through obstacles and see how far you can fly. Simple controls, addictive gameplay.',
+  },
+  {
+    title: 'SpaceLazerz',
+    slug: 'spacelazers',
+    description: 'Classic spaceship shooter with a modern twist. Blast through waves of enemies, dodge projectiles, and upgrade your ship. How long can you survive?',
+  },
+  {
+    title: 'Coffee vs Nap',
+    slug: 'coffee-vs-nap',
+    description: 'A unique resource balancing game where you manage your energy levels. Make strategic decisions between coffee boosts and power naps to get through your day!',
+  },
+];
+---
+
+<Layout title="Games - John [Last Name]" description="Educational and entertaining games created by John [Last Name]">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-12 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-primary-400 mb-4">
+        Games Portfolio
+      </h1>
+      <p class="text-xl text-neutral-300 max-w-2xl mx-auto">
+        A collection of educational and entertaining games designed to engage learners and make learning fun.
+      </p>
+    </div>
+
+    <!-- Games Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      {games.map((game) => (
+        <GameCard
+          title={game.title}
+          slug={game.slug}
+          description={game.description}
+        />
+      ))}
+    </div>
+
+    <!-- Coming Soon Section -->
+    <div class="bg-neutral-800 rounded-lg p-8 border border-neutral-700 text-center">
+      <svg class="w-16 h-16 text-secondary-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+      <h2 class="text-2xl font-bold text-neutral-300 mb-2">More Games Coming Soon!</h2>
+      <p class="text-neutral-400">
+        I'm constantly developing new educational games and interactive experiences.
+        Check back regularly for updates!
+      </p>
+    </div>
+  </div>
+</Layout>

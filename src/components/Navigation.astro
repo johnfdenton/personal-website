@@ -1,0 +1,66 @@
+---
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="bg-neutral-800 border-b border-neutral-700 sticky top-0 z-50">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center justify-between">
+        <a href="/" class="text-2xl font-bold text-primary-400 hover:text-primary-300 transition-colors">
+          John [Last Name]
+        </a>
+        <button id="mobile-menu-button" class="md:hidden text-neutral-300 hover:text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <ul id="mobile-menu" class="hidden md:flex flex-col md:flex-row md:space-x-6 mt-4 md:mt-0 space-y-2 md:space-y-0">
+        <li>
+          <a
+            href="/"
+            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="/games"
+            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/games' || currentPath.startsWith('/games/') ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
+          >
+            Games
+          </a>
+        </li>
+        <li>
+          <a
+            href="/arduino"
+            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/arduino' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
+          >
+            Arduino Projects
+          </a>
+        </li>
+        <li>
+          <a
+            href="/teaching"
+            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/teaching' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
+          >
+            Teaching
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    button?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
+  });
+</script>
