@@ -14,43 +14,114 @@ import Layout from '../layouts/Layout.astro';
       </p>
     </div>
 
-    <!-- Coming Soon Section -->
-    <div class="bg-neutral-800 rounded-lg p-12 border border-neutral-700 text-center shadow-lg">
-      <div class="max-w-2xl mx-auto">
-        <svg class="w-24 h-24 text-secondary-500 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-        </svg>
-        <h2 class="text-3xl font-bold text-neutral-200 mb-4">Projects Coming Soon!</h2>
-        <p class="text-neutral-300 text-lg mb-8 leading-relaxed">
-          I'm currently documenting my Arduino and robotics projects. This section will feature
-          detailed write-ups, code samples, circuit diagrams, and videos of various hardware projects
-          including sensors, motors, displays, and interactive installations.
-        </p>
-        <div class="grid md:grid-cols-3 gap-6 mt-8">
-          <div class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
-            <svg class="w-12 h-12 text-primary-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-            <h3 class="text-primary-400 font-semibold mb-2">Sensors & Input</h3>
-            <p class="text-neutral-400 text-sm">Environmental monitoring and interactive controls</p>
-          </div>
-          <div class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
-            <svg class="w-12 h-12 text-secondary-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
-            </svg>
-            <h3 class="text-secondary-400 font-semibold mb-2">Robotics</h3>
-            <p class="text-neutral-400 text-sm">Autonomous vehicles and robotic systems</p>
-          </div>
-          <div class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
-            <svg class="w-12 h-12 text-primary-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-            </svg>
-            <h3 class="text-primary-400 font-semibold mb-2">Displays & Output</h3>
-            <p class="text-neutral-400 text-sm">LEDs, screens, and visual feedback systems</p>
-          </div>
-        </div>
+    <!-- Project 1: Baby Feeding & Nap Timer -->
+    <article class="bg-neutral-800 rounded-lg p-8 border border-neutral-700 shadow-lg mb-8">
+      <h2 class="text-3xl font-bold text-primary-400 mb-4">Baby Feeding & Nap Timer</h2>
+      <p class="text-neutral-300 text-lg mb-6 leading-relaxed">
+        A two-button tracking device that monitors elapsed time since baby's last feeding and nap using a real-time clock and LCD display. Data persists through power loss via EEPROM storage.
+      </p>
+
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-secondary-400 mb-3">Key Features</h3>
+        <ul class="list-disc list-inside text-neutral-300 space-y-2">
+          <li>Dual countdown timers on 16×2 LCD</li>
+          <li>Real-time clock for power outages</li>
+          <li>Fast-forward by holding buttons</li>
+          <li>Non-volatile memory</li>
+          <li>Two pushbuttons interface</li>
+        </ul>
       </div>
-    </div>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Hardware Components</summary>
+        <ul class="mt-4 list-disc list-inside text-neutral-300 space-y-2">
+          <li>Arduino Uno</li>
+          <li>DS1302 RTC module with CR2032 battery</li>
+          <li>16×2 LCD (HD44780)</li>
+          <li>10kΩ potentiometer</li>
+          <li>2 pushbuttons</li>
+          <li>Breadboard</li>
+        </ul>
+      </details>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Wiring Details</summary>
+        <div class="mt-4 text-neutral-300 space-y-2">
+          <p><strong class="text-secondary-400">LCD:</strong> RS→Pin 12, E→Pin 11, D4-7→Pins 10,9,8,13</p>
+          <p><strong class="text-secondary-400">Buttons:</strong> Feed→Pin 2, Nap→Pin 3</p>
+          <p><strong class="text-secondary-400">RTC:</strong> CLK→Pin 6, DAT→Pin 5, RST→Pin 4</p>
+        </div>
+      </details>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Operation</summary>
+        <div class="mt-4 text-neutral-300 space-y-2">
+          <p>Display shows <code class="bg-neutral-800 px-2 py-1 rounded text-primary-300">Feed: HH:MM:SS / Nap: HH:MM:SS</code></p>
+          <p><strong class="text-secondary-400">Quick press:</strong> Resets timer</p>
+          <p><strong class="text-secondary-400">Hold 0.5s:</strong> Fast-forward mode</p>
+        </div>
+      </details>
+    </article>
+
+    <!-- Project 2: Toddler Sleep Clock -->
+    <article class="bg-neutral-800 rounded-lg p-8 border border-neutral-700 shadow-lg mb-8">
+      <h2 class="text-3xl font-bold text-primary-400 mb-4">Toddler Sleep Clock</h2>
+      <p class="text-neutral-300 text-lg mb-6 leading-relaxed">
+        A custom microcontroller-based alarm clock using color cues to help young children understand sleep schedules with color transitions.
+      </p>
+
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-secondary-400 mb-3">Key Features</h3>
+        <ul class="list-disc list-inside text-neutral-300 space-y-2">
+          <li>Morning (Red→Amber→Green) and Evening (Green→Amber→Red) progressions</li>
+          <li>Daytime power saving</li>
+          <li>Smooth 10-second LED transitions</li>
+          <li>Backup battery</li>
+          <li>Three-button configuration menu</li>
+        </ul>
+      </div>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Hardware Components</summary>
+        <ul class="mt-4 list-disc list-inside text-neutral-300 space-y-2">
+          <li>Arduino Uno</li>
+          <li>DS1302 RTC with CR2032</li>
+          <li>16x2 LCD (HD44780)</li>
+          <li>RGB LED (common cathode KY-016)</li>
+          <li>3 push buttons</li>
+          <li>4x 220Ω resistors</li>
+          <li>10kΩ pot</li>
+        </ul>
+      </details>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Wiring Details</summary>
+        <div class="mt-4 text-neutral-300 space-y-2">
+          <p><strong class="text-secondary-400">Buttons:</strong> D2, D3, D4 to ground</p>
+          <p><strong class="text-secondary-400">RGB LED:</strong> R→D9, G→D10, B→D8</p>
+          <p><strong class="text-secondary-400">RTC:</strong> Clock→D7, Data→D6, Reset→D5</p>
+          <p><strong class="text-secondary-400">LCD:</strong> RS→D12, Enable→D11, Data→A0-A3</p>
+        </div>
+      </details>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Software & Setup</summary>
+        <div class="mt-4 text-neutral-300 space-y-3">
+          <p><strong class="text-secondary-400">Libraries:</strong> LiquidCrystal, Rtc by Makuna, EEPROM</p>
+          <p><strong class="text-secondary-400">Setup:</strong> Hold SELECT 1s (LED turns blue), use UP/DOWN to adjust, SELECT to confirm</p>
+        </div>
+      </details>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Configuration Options</summary>
+        <ul class="mt-4 list-disc list-inside text-neutral-300 space-y-2">
+          <li>Current time</li>
+          <li>Wake amber/green times</li>
+          <li>Bedtime amber/red times</li>
+          <li>Optional nap times</li>
+        </ul>
+      </details>
+    </article>
 
     <!-- Educational Focus -->
     <div class="mt-8 bg-gradient-to-r from-primary-900/20 to-secondary-900/20 rounded-lg p-6 border border-primary-700/30">
@@ -61,8 +132,7 @@ import Layout from '../layouts/Layout.astro';
         <div>
           <h3 class="text-lg font-semibold text-neutral-200 mb-2">Educational Approach</h3>
           <p class="text-neutral-300 text-sm leading-relaxed">
-            Each project will include detailed explanations suitable for students and educators,
-            making physical computing accessible and engaging for learners of all levels.
+            These projects demonstrate practical applications of physical computing, combining sensors, displays, and microcontrollers to solve real-world problems.
           </p>
         </div>
       </div>
