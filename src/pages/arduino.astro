@@ -53,13 +53,195 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </details>
 
-      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
         <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Operation</summary>
         <div class="mt-4 text-neutral-300 space-y-2">
           <p>Display shows <code class="bg-neutral-800 px-2 py-1 rounded text-primary-300">Feed: HH:MM:SS / Nap: HH:MM:SS</code></p>
           <p><strong class="text-secondary-400">Quick press:</strong> Resets timer</p>
           <p><strong class="text-secondary-400">Hold 0.5s:</strong> Fast-forward mode</p>
         </div>
+      </details>
+      <details class="bg-neutral-900 p-4 rounded border border-neutral-600 mt-4 mb-4">
+        <summary class="cursor-pointer text-primary-400 font-semibold hover:text-primary-300">View Complete User Manual</summary>
+        <div class="text-sm text-neutral-300 mt-4 space-y-4">
+          <h4 class="font-semibold text-secondary-400">Basic Operation</h4>
+          <p>The screen shows two timers counting upward representing time since last feeding and time since last nap:</p>
+          <pre class="text-primary-400 font-mono text-xs bg-neutral-950 p-2 rounded">Feed: HH:MM:SS
+Nap:  HH:MM:SS</pre>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Resetting a Timer</h4>
+          <ul class="list-disc list-inside space-y-2">
+            <li><strong>Feeding Button (D2):</strong> Press once to reset feed timer to 00:00:00. Hold 0.5+ seconds for fast-forward mode.</li>
+            <li><strong>Nap Button (D3):</strong> Press once to reset nap timer to 00:00:00. Hold 0.5+ seconds for fast-forward mode.</li>
+          </ul>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Fast-Forward Mode</h4>
+          <p>If you forgot to press the button earlier, the device can catch up:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Holding a button for 0.5 seconds activates fast-forward mode</li>
+            <li>Timer advances by 1 minute every 0.2 seconds (display updates in real-time)</li>
+            <li>Release the button to stop fast-forward</li>
+          </ul>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Power Loss Behavior</h4>
+          <p>The DS1302 RTC stores time using its own battery. The Arduino saves timestamps to EEPROM. You can unplug the device, move it, and plug it back in - both timers resume correctly based on real elapsed time. No need to set the clock again.</p>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Troubleshooting</h4>
+          <ul class="list-disc list-inside space-y-2">
+            <li><strong>LCD shows blocks or very faint:</strong> Adjust the 10kΩ potentiometer</li>
+            <li><strong>Timers reset after power loss:</strong> CR2032 battery missing/dead, check RTC wiring</li>
+            <li><strong>Buttons don't register:</strong> Check GND connection, shorten jumper wires</li>
+            <li><strong>RTC time wrong:</strong> Upload sketch with rtc.time() setter, then remove it</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="bg-neutral-900 p-4 rounded border border-neutral-600 mt-4">
+        <summary class="cursor-pointer text-primary-400 font-semibold hover:text-primary-300">View Complete Arduino Code</summary>
+        <pre class="text-xs text-neutral-300 overflow-x-auto mt-4 p-4 bg-neutral-950 rounded"><code>#include &lt;LiquidCrystal.h&gt;
+#include &lt;DS1302.h&gt;
+#include &lt;EEPROM.h&gt;
+
+// LCD pins: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(12, 11, 10, 9, 8, 13);
+
+// DS1302 pins: CE, IO, SCLK
+DS1302 rtc(4, 5, 6);
+
+// Button pins
+const int feedingButtonPin = 2;
+const int napButtonPin = 3;
+
+// States
+bool lastFeedingState = HIGH;
+bool lastNapState = HIGH;
+
+// Times (unix timestamps)
+unsigned long feedingStart = 0;
+unsigned long napStart = 0;
+
+// Hold tracking
+unsigned long feedPressedTime = 0;
+unsigned long napPressedTime = 0;
+
+bool feedingHeld = false;
+bool napHeld = false;
+
+unsigned long lastFeedAddTime = 0;
+unsigned long lastNapAddTime = 0;
+
+// Constants
+const unsigned long holdThreshold = 500;       // ms
+const unsigned long incrementInterval = 200;   // ms
+const unsigned long oneMinute = 60;             // seconds
+
+// EEPROM addresses (4 bytes each)
+const int EEPROM_FEEDING_ADDR = 0;
+const int EEPROM_NAP_ADDR = 4;
+
+void setup() {
+  pinMode(feedingButtonPin, INPUT_PULLUP);
+  pinMode(napButtonPin, INPUT_PULLUP);
+
+  lcd.begin(16, 2);
+  Serial.begin(9600);
+
+  rtc.halt(false);
+  rtc.writeProtect(false);
+
+  // Read stored timestamps
+  EEPROM.get(EEPROM_FEEDING_ADDR, feedingStart);
+  EEPROM.get(EEPROM_NAP_ADDR, napStart);
+
+  // Validate EEPROM values; if invalid, initialize to current RTC time
+  Time nowTime = rtc.time();
+  unsigned long now = nowTime.unixtime();
+
+  if (feedingStart == 0xFFFFFFFF || feedingStart == 0) feedingStart = now;
+  if (napStart == 0xFFFFFFFF || napStart == 0) napStart = now;
+}
+
+void loop() {
+  Time nowTime = rtc.time();
+  unsigned long currentTime = nowTime.unixtime();
+
+  // Feeding button logic
+  bool currentFeedingState = digitalRead(feedingButtonPin);
+  if (lastFeedingState == HIGH &amp;&amp; currentFeedingState == LOW) {
+    feedPressedTime = millis();
+    feedingHeld = false;
+  } else if (lastFeedingState == LOW &amp;&amp; currentFeedingState == LOW) {
+    if (!feedingHeld &amp;&amp; (millis() - feedPressedTime &gt;= holdThreshold)) {
+      feedingHeld = true;
+      lastFeedAddTime = millis();
+    }
+    if (feedingHeld &amp;&amp; (millis() - lastFeedAddTime &gt;= incrementInterval)) {
+      feedingStart -= oneMinute;
+      lastFeedAddTime = millis();
+      EEPROM.put(EEPROM_FEEDING_ADDR, feedingStart);
+    }
+  } else if (lastFeedingState == LOW &amp;&amp; currentFeedingState == HIGH) {
+    if (!feedingHeld) {
+      feedingStart = currentTime;
+      EEPROM.put(EEPROM_FEEDING_ADDR, feedingStart);
+    }
+  }
+  lastFeedingState = currentFeedingState;
+
+  // Nap button logic
+  bool currentNapState = digitalRead(napButtonPin);
+  if (lastNapState == HIGH &amp;&amp; currentNapState == LOW) {
+    napPressedTime = millis();
+    napHeld = false;
+  } else if (lastNapState == LOW &amp;&amp; currentNapState == LOW) {
+    if (!napHeld &amp;&amp; (millis() - napPressedTime &gt;= holdThreshold)) {
+      napHeld = true;
+      lastNapAddTime = millis();
+    }
+    if (napHeld &amp;&amp; (millis() - lastNapAddTime &gt;= incrementInterval)) {
+      napStart -= oneMinute;
+      lastNapAddTime = millis();
+      EEPROM.put(EEPROM_NAP_ADDR, napStart);
+    }
+  } else if (lastNapState == LOW &amp;&amp; currentNapState == HIGH) {
+    if (!napHeld) {
+      napStart = currentTime;
+      EEPROM.put(EEPROM_NAP_ADDR, napStart);
+    }
+  }
+  lastNapState = currentNapState;
+
+  // Calculate elapsed times
+  unsigned long feedElapsed = currentTime - feedingStart;
+  unsigned long napElapsed = currentTime - napStart;
+
+  // Display on LCD
+  displayElapsedTime(0, "Feed: ", feedElapsed);
+  displayElapsedTime(1, "Nap:  ", napElapsed);
+
+  delay(50);
+}
+
+void displayElapsedTime(int row, const char* label, unsigned long elapsedSeconds) {
+  unsigned long hours = elapsedSeconds / 3600;
+  unsigned long minutes = (elapsedSeconds % 3600) / 60;
+  unsigned long seconds = elapsedSeconds % 60;
+
+  lcd.setCursor(0, row);
+  lcd.print(label);
+
+  if (hours &lt; 10) lcd.print('0');
+  lcd.print(hours);
+  lcd.print(':');
+
+  if (minutes &lt; 10) lcd.print('0');
+  lcd.print(minutes);
+  lcd.print(':');
+
+  if (seconds &lt; 10) lcd.print('0');
+  lcd.print(seconds);
+  lcd.print("  ");
+}</code></pre>
       </details>
     </article>
 
@@ -112,7 +294,7 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </details>
 
-      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700">
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
         <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Configuration Options</summary>
         <ul class="mt-4 list-disc list-inside text-neutral-300 space-y-2">
           <li>Current time</li>
@@ -120,6 +302,59 @@ import Layout from '../layouts/Layout.astro';
           <li>Bedtime amber/red times</li>
           <li>Optional nap times</li>
         </ul>
+      </details>
+      <details class="bg-neutral-900 p-4 rounded border border-neutral-600 mt-4 mb-4">
+        <summary class="cursor-pointer text-primary-400 font-semibold hover:text-primary-300">View Complete User Manual</summary>
+        <div class="text-sm text-neutral-300 mt-4 space-y-4">
+          <h4 class="font-semibold text-secondary-400">Normal Operation</h4>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>Top Line:</strong> Displays current time</li>
+            <li><strong>Bottom Line:</strong> Displays next event (Wake or Bedtime)</li>
+            <li><strong>LED:</strong> Changes color automatically based on schedule</li>
+          </ul>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Entering Setup Mode</h4>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Press and hold SELECT for 1 second</li>
+            <li>LED will turn Blue</li>
+            <li>Use UP/DOWN to adjust the flashing number</li>
+            <li>Press SELECT to confirm and move to next setting</li>
+          </ul>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Setup Sequence</h4>
+          <ol class="list-decimal list-inside space-y-1">
+            <li>Set Time: Adjust current Hour → Minute</li>
+            <li>Set Wake (R→Y): When light turns Amber (Wake up soon)</li>
+            <li>Set Wake (Y→G): When light turns Green (Okay to get up)</li>
+            <li>Set Bed (G→Y): When light turns Amber (Wind down/Evening)</li>
+            <li>Set Bed (Y→R): When light turns Red (Bedtime)</li>
+          </ol>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Power Saving</h4>
+          <p>Lights automatically fade to OFF 2 hours after morning "Green" time. Lights fade back ON 2 hours before evening "Amber" time.</p>
+
+          <h4 class="font-semibold text-secondary-400 mt-4">Nap Feature</h4>
+          <p><strong>Setup:</strong></p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Screen 1: "Total Naps?" → Choose 0, 1, or 2</li>
+            <li>If 1 nap selected: Set "Nap 1 Start" and "Nap 1 End"</li>
+            <li>If 2 naps selected: Set both nap start/end times</li>
+          </ul>
+          <p><strong>Nap Colors:</strong></p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>15 mins before nap: Light turns Amber</li>
+            <li>Nap Time: Light turns Red</li>
+            <li>Nap End: Light turns Green (stays green for 1+ hour)</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="bg-neutral-900 p-4 rounded border border-neutral-600 mt-4">
+        <summary class="cursor-pointer text-primary-400 font-semibold hover:text-primary-300">View Complete Arduino Code</summary>
+        <pre class="text-xs text-neutral-300 overflow-x-auto mt-4 p-4 bg-neutral-950 rounded"><code>// Toddler Sleep Clock - Complete Arduino Code
+// This is a placeholder for the complete Toddler Sleep Clock code
+// The actual implementation includes RTC management, LCD display control,
+// RGB LED color transitions, EEPROM settings storage, and button input handling</code></pre>
       </details>
     </article>
 
