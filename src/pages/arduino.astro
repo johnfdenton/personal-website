@@ -139,7 +139,7 @@ const unsigned long oneMinute = 60;             // seconds
 const int EEPROM_FEEDING_ADDR = 0;
 const int EEPROM_NAP_ADDR = 4;
 
-void setup() {
+void setup() &#123;
   pinMode(feedingButtonPin, INPUT_PULLUP);
   pinMode(napButtonPin, INPUT_PULLUP);
 
@@ -159,56 +159,56 @@ void setup() {
 
   if (feedingStart == 0xFFFFFFFF || feedingStart == 0) feedingStart = now;
   if (napStart == 0xFFFFFFFF || napStart == 0) napStart = now;
-}
+&#125;
 
-void loop() {
+void loop() &#123;
   Time nowTime = rtc.time();
   unsigned long currentTime = nowTime.unixtime();
 
   // Feeding button logic
   bool currentFeedingState = digitalRead(feedingButtonPin);
-  if (lastFeedingState == HIGH &amp;&amp; currentFeedingState == LOW) {
+  if (lastFeedingState == HIGH &amp;&amp; currentFeedingState == LOW) &#123;
     feedPressedTime = millis();
     feedingHeld = false;
-  } else if (lastFeedingState == LOW &amp;&amp; currentFeedingState == LOW) {
-    if (!feedingHeld &amp;&amp; (millis() - feedPressedTime &gt;= holdThreshold)) {
+  &#125; else if (lastFeedingState == LOW &amp;&amp; currentFeedingState == LOW) &#123;
+    if (!feedingHeld &amp;&amp; (millis() - feedPressedTime &gt;= holdThreshold)) &#123;
       feedingHeld = true;
       lastFeedAddTime = millis();
-    }
-    if (feedingHeld &amp;&amp; (millis() - lastFeedAddTime &gt;= incrementInterval)) {
+    &#125;
+    if (feedingHeld &amp;&amp; (millis() - lastFeedAddTime &gt;= incrementInterval)) &#123;
       feedingStart -= oneMinute;
       lastFeedAddTime = millis();
       EEPROM.put(EEPROM_FEEDING_ADDR, feedingStart);
-    }
-  } else if (lastFeedingState == LOW &amp;&amp; currentFeedingState == HIGH) {
-    if (!feedingHeld) {
+    &#125;
+  &#125; else if (lastFeedingState == LOW &amp;&amp; currentFeedingState == HIGH) &#123;
+    if (!feedingHeld) &#123;
       feedingStart = currentTime;
       EEPROM.put(EEPROM_FEEDING_ADDR, feedingStart);
-    }
-  }
+    &#125;
+  &#125;
   lastFeedingState = currentFeedingState;
 
   // Nap button logic
   bool currentNapState = digitalRead(napButtonPin);
-  if (lastNapState == HIGH &amp;&amp; currentNapState == LOW) {
+  if (lastNapState == HIGH &amp;&amp; currentNapState == LOW) &#123;
     napPressedTime = millis();
     napHeld = false;
-  } else if (lastNapState == LOW &amp;&amp; currentNapState == LOW) {
-    if (!napHeld &amp;&amp; (millis() - napPressedTime &gt;= holdThreshold)) {
+  &#125; else if (lastNapState == LOW &amp;&amp; currentNapState == LOW) &#123;
+    if (!napHeld &amp;&amp; (millis() - napPressedTime &gt;= holdThreshold)) &#123;
       napHeld = true;
       lastNapAddTime = millis();
-    }
-    if (napHeld &amp;&amp; (millis() - lastNapAddTime &gt;= incrementInterval)) {
+    &#125;
+    if (napHeld &amp;&amp; (millis() - lastNapAddTime &gt;= incrementInterval)) &#123;
       napStart -= oneMinute;
       lastNapAddTime = millis();
       EEPROM.put(EEPROM_NAP_ADDR, napStart);
-    }
-  } else if (lastNapState == LOW &amp;&amp; currentNapState == HIGH) {
-    if (!napHeld) {
+    &#125;
+  &#125; else if (lastNapState == LOW &amp;&amp; currentNapState == HIGH) &#123;
+    if (!napHeld) &#123;
       napStart = currentTime;
       EEPROM.put(EEPROM_NAP_ADDR, napStart);
-    }
-  }
+    &#125;
+  &#125;
   lastNapState = currentNapState;
 
   // Calculate elapsed times
@@ -220,9 +220,9 @@ void loop() {
   displayElapsedTime(1, "Nap:  ", napElapsed);
 
   delay(50);
-}
+&#125;
 
-void displayElapsedTime(int row, const char* label, unsigned long elapsedSeconds) {
+void displayElapsedTime(int row, const char* label, unsigned long elapsedSeconds) &#123;
   unsigned long hours = elapsedSeconds / 3600;
   unsigned long minutes = (elapsedSeconds % 3600) / 60;
   unsigned long seconds = elapsedSeconds % 60;
@@ -241,7 +241,7 @@ void displayElapsedTime(int row, const char* label, unsigned long elapsedSeconds
   if (seconds &lt; 10) lcd.print('0');
   lcd.print(seconds);
   lcd.print("  ");
-}</code></pre>
+&#125;</code></pre>
       </details>
     </article>
 
