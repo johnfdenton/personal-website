@@ -2,15 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Arduino Projects - John F Denton" description="Arduino and robotics projects by John [Last Name]">
+<Layout title="Arduino/Projects - John F Denton" description="Arduino projects and web applications by John F Denton">
   <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <div class="mb-12 text-center">
       <h1 class="text-4xl md:text-5xl font-bold text-primary-400 mb-4">
-        Arduino Projects
+        Arduino/Projects
       </h1>
       <p class="text-xl text-neutral-300 max-w-2xl mx-auto">
-        Exploring the intersection of hardware and software through hands-on robotics and electronics.
+        Physical computing projects and web applications that solve real-world problems.
       </p>
     </div>
 
@@ -358,19 +358,77 @@ void displayElapsedTime(int row, const char* label, unsigned long elapsedSeconds
       </details>
     </article>
 
+    <!-- Project 3: Read-a-Thon Tracking System -->
+    <article class="bg-neutral-800 rounded-lg p-8 border border-neutral-700 shadow-lg mb-8">
+      <h2 class="text-3xl font-bold text-primary-400 mb-4">Read-a-Thon Tracking System</h2>
+
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-secondary-400 mb-3">Overview</h3>
+        <p class="text-neutral-300 leading-relaxed">
+          I developed a custom web application to track and visualize reading progress for MMFS Middle School's annual Read-a-Thon fundraiser. The system provides real-time data visualization and community engagement features that encourage participation and celebrate student achievement.
+        </p>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-secondary-400 mb-3">The Challenge</h3>
+        <p class="text-neutral-300 leading-relaxed">
+          Our school needed a way to track reading progress across the middle school, display results publicly to motivate students, and connect the fundraiser to charitable causes. Traditional paper-based tracking lacked the immediacy and visual impact to sustain engagement throughout the event.
+        </p>
+      </div>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Technical Implementation</summary>
+        <div class="mt-4 text-neutral-300 space-y-4">
+          <p>The system uses a streamlined tech stack focused on accessibility and ease of use:</p>
+
+          <div>
+            <p class="font-semibold text-secondary-400">Data Collection:</p>
+            <p>Google Forms provides a simple, mobile-friendly interface for students to submit reading time or pages completed immediately after finishing a book.</p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-secondary-400">Data Processing:</p>
+            <p>Responses feed into a Google Sheets backend that aggregates individual submissions into class and school-wide totals.</p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-secondary-400">Visualization:</p>
+            <p>A custom web interface displays:</p>
+            <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+              <li>Thermometer-style progress gauge showing total reading against the school goal</li>
+              <li>Real-time feed of recent submissions with student names and books read</li>
+              <li>Information about supported charitable organizations</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+
+      <div class="mb-6">
+        <h3 class="text-xl font-semibold text-secondary-400 mb-3">Impact</h3>
+        <p class="text-neutral-300 leading-relaxed">
+          The tracker transformed our Read-a-Thon from an administrative task into a community event. Students check progress throughout the day, teachers display it in classrooms, and the real-time updates create friendly competition and collective goal pursuit. The public display of charitable causes connects student effort directly to community impact.
+        </p>
+      </div>
+
+      <details class="bg-neutral-900 rounded-lg p-6 border border-neutral-700 mb-4">
+        <summary class="text-lg font-semibold text-primary-400 cursor-pointer hover:text-primary-300">Technical Skills Demonstrated</summary>
+        <ul class="mt-4 list-disc list-inside text-neutral-300 space-y-2">
+          <li>Frontend development (HTML, CSS, JavaScript)</li>
+          <li>Google Apps Script integration</li>
+          <li>API integration with Google Sheets</li>
+          <li>Real-time data visualization</li>
+          <li>Responsive design for multiple devices</li>
+          <li>User experience design for student audiences</li>
+        </ul>
+      </details>
+    </article>
+
     <!-- Educational Focus -->
     <div class="mt-8 bg-gradient-to-r from-primary-900/20 to-secondary-900/20 rounded-lg p-6 border border-primary-700/30">
-      <div class="flex items-start">
-        <svg class="w-6 h-6 text-secondary-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-        </svg>
-        <div>
-          <h3 class="text-lg font-semibold text-neutral-200 mb-2">Educational Approach</h3>
-          <p class="text-neutral-300 text-sm leading-relaxed">
-            These projects demonstrate practical applications of physical computing, combining sensors, displays, and microcontrollers to solve real-world problems.
-          </p>
-        </div>
-      </div>
+      <h3 class="text-lg font-semibold text-neutral-200 mb-2">Educational Approach</h3>
+      <p class="text-neutral-300 text-sm leading-relaxed">
+        These projects demonstrate practical applications of technology to solve real-world problems, from physical computing with microcontrollers to web-based data visualization systems that engage entire communities.
+      </p>
     </div>
   </div>
 </Layout>
