@@ -27,6 +27,14 @@ const currentPath = Astro.url.pathname;
         </li>
         <li>
           <a
+            href="/teaching"
+            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/teaching' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
+          >
+            Teaching
+          </a>
+        </li>
+        <li>
+          <a
             href="/games"
             class={`block py-2 px-3 rounded transition-colors ${currentPath === '/games' || currentPath.startsWith('/games/') ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
           >
@@ -39,14 +47,6 @@ const currentPath = Astro.url.pathname;
             class={`block py-2 px-3 rounded transition-colors ${currentPath === '/arduino' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
           >
             Arduino Projects
-          </a>
-        </li>
-        <li>
-          <a
-            href="/teaching"
-            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/teaching' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
-          >
-            Teaching
           </a>
         </li>
       </ul>
