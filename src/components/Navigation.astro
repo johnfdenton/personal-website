@@ -35,6 +35,14 @@ const currentPath = Astro.url.pathname;
         </li>
         <li>
           <a
+            href="/professional-development"
+            class={`block py-2 px-3 rounded transition-colors ${currentPath === '/professional-development' ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
+          >
+            Professional Development
+          </a>
+        </li>
+        <li>
+          <a
             href="/games"
             class={`block py-2 px-3 rounded transition-colors ${currentPath === '/games' || currentPath.startsWith('/games/') ? 'bg-primary-600 text-white' : 'text-neutral-300 hover:text-white hover:bg-neutral-700'}`}
           >
