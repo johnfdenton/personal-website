@@ -1,6 +1,6 @@
 # Portfolio Website
 
-A professional portfolio website for John [Last Name] - Educational Technologist, Instructional Designer, and Coding & Robotics Teacher.
+A professional portfolio website for John F Denton - Educational Technologist, Instructional Designer, and Coding & Robotics Teacher.
 
 Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/), designed for deployment on [Cloudflare Pages](https://pages.cloudflare.com/).
 
@@ -8,8 +8,9 @@ Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.
 
 - **Clean, Professional Design**: Tech-focused aesthetic with blues, greens, and greys
 - **Responsive Layout**: Fully responsive design that works seamlessly on mobile and desktop
-- **Games Portfolio**: Expandable grid layout for showcasing educational games
-- **Contact Form**: Integrated contact form (requires setup with Formspree or similar service)
+- **Comprehensive Portfolio**: Showcases teaching experience, professional development work, leadership initiatives, games, and Arduino/robotics projects
+- **Games Portfolio**: Grid layout featuring educational and entertaining games
+- **Easy Contact**: Simple email contact integration
 - **Modular Structure**: Easy to update and expand with new content
 - **Fast Performance**: Static site generation with Astro for optimal loading speeds
 
@@ -27,14 +28,17 @@ Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.
 │   ├── layouts/
 │   │   └── Layout.astro
 │   └── pages/
-│       ├── index.astro           # Home/About page
-│       ├── arduino.astro          # Arduino Projects (placeholder)
-│       ├── teaching.astro         # Teaching page (placeholder)
+│       ├── index.astro                      # Home/About page
+│       ├── teaching.astro                   # Teaching experience
+│       ├── professional-development.astro   # Faculty training & PD
+│       ├── leadership.astro                 # Leadership & strategic initiatives
+│       ├── arduino.astro                    # Arduino/Projects showcase
 │       └── games/
-│           ├── index.astro        # Games listing
+│           ├── index.astro                  # Games listing
 │           ├── unicat.astro
 │           ├── spacelazers.astro
-│           └── coffee-vs-nap.astro
+│           ├── coffee-vs-nap.astro
+│           └── hoppy-bunny.astro
 ├── astro.config.mjs
 ├── tailwind.config.mjs
 ├── package.json
@@ -75,35 +79,13 @@ npm run dev
 
 ## Customization
 
-### Contact Form Setup
+### Updating Contact Information
 
-The contact form on the home page requires a form handling service. We recommend [Formspree](https://formspree.io/) (free):
-
-1. Sign up at [https://formspree.io/](https://formspree.io/)
-2. Create a new form and get your form endpoint
-3. Open `src/pages/index.astro`
-4. Find the form tag (around line 65)
-5. Replace `YOUR_FORM_ID` with your actual Formspree form ID:
-   ```html
-   <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-   ```
-
-**Alternative Services:**
-- [Web3Forms](https://web3forms.com/) - Simple and free
-- [Getform](https://getform.io/) - Free tier available
-- [Netlify Forms](https://www.netlify.com/products/forms/) - If deploying to Netlify instead
-
-### Updating Your Name
-
-Search for `[Last Name]` throughout the project and replace it with your actual last name:
-
-1. `src/layouts/Layout.astro`
-2. `src/components/Navigation.astro`
-3. `src/pages/index.astro`
-4. All game pages
-5. `README.md`
+To change the contact email, edit the mailto link in `src/pages/index.astro` (around line 63).
 
 ### Adding More Games
+
+The site currently features four games: UniCat, SpaceLazerz, Coffee vs Nap, and Hoppy Bunny.
 
 To add a new game:
 
@@ -178,30 +160,21 @@ wrangler login
 wrangler pages deploy dist
 ```
 
-## Creating a GitHub Repository
+## Git Repository
 
-1. **Initialize Git locally:**
+This project is already initialized as a Git repository. To push changes:
+
 ```bash
-git init
 git add .
-git commit -m "Initial commit: Portfolio website"
+git commit -m "Your commit message"
+git push
 ```
 
-2. **Create a new repository on GitHub:**
-   - Go to [https://github.com/new](https://github.com/new)
-   - Name your repository (e.g., `portfolio-website`)
-   - Choose public or private
-   - Do NOT initialize with README, .gitignore, or license
-   - Click "Create repository"
+If you're forking this project for your own use, you'll need to update the remote URL:
 
-3. **Push your code to GitHub:**
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-git branch -M main
-git push -u origin main
+git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 ```
-
-Replace `YOUR_USERNAME` and `YOUR_REPO_NAME` with your actual GitHub username and repository name.
 
 ## Technology Stack
 
